@@ -4,6 +4,8 @@ Flask backend that accepts an uploaded image and analyzes it with the Google
 Cloud Vision API. It analyzes the image bytes uploaded directly by the client —
 no storage bucket required.
 
+![Image moderation flow: upload → Google Vision API → analysis & verdict](https://cdn-images-1.medium.com/max/800/1*llAxB81ZfcSA9bLgAIFsow.png)
+
 ## Run
 
 ```bash
@@ -88,6 +90,128 @@ backups):
 ```
 
 The log location is set by the `LOG_FILE` env var in `docker-compose.yml`.
+
+## Usage
+
+**1. Set up the request in Postman.** Create a `POST` request to
+`http://localhost:5000/analyze`, open the **Body** tab, and choose **form-data**.
+Add a key named `image` and switch its type from *Text* to **File**.
+
+![Postman form-data request set to POST /analyze with an "image" field of type File](https://cdn-images-1.medium.com/max/800/1*BTnmU2oT9qk83njYFKZ8Kw.png)
+
+**2. Select an image.** Click **Select Files** on the `image` field and pick the
+picture you want to analyze (here, a photo of someone surfing).
+
+![Choosing the surfing image file for the image field](https://cdn-images-1.medium.com/max/800/1*prEYIEm6konDItNQ69oDag.png)
+
+**3. Send the request.** Hit **Send** to upload the image to the API.
+
+![Submitting the request in Postman](https://cdn-images-1.medium.com/max/800/1*RmN_8sobz5uPjRmvVhDDbQ.png)
+
+**4. Read the response.** The API returns the analysis — detected labels, matched
+categories, SafeSearch ratings, and the overall classification:
+
+```json
+{
+    "analysis": {
+        "categories": [
+            "WaterRelatedElements",
+            "FoodDrinksAndParties",
+            "SportsAndFitness"
+        ],
+        "hasLogo": null,
+        "isHuman": false,
+        "labels": [
+            "boardsport",
+            "surfboard",
+            "surfing",
+            "water",
+            "surfing--equipment and supplies",
+            "water sport",
+            "wave",
+            "list of surface water sports",
+            "fluid",
+            "personal protective equipment"
+        ],
+        "matchedCategories": {
+            "FoodDrinksAndParties": [
+                "water"
+            ],
+            "SportsAndFitness": [
+                "surfing"
+            ],
+            "WaterRelatedElements": [
+                "water",
+                "wave",
+                "surfing"
+            ]
+        },
+        "safeSearch": {
+            "adult": "very_unlikely",
+            "medical": "very_unlikely",
+            "racy": "unlikely",
+            "spoof": "very_unlikely",
+            "violence": "very_unlikely"
+        },
+        "safeSearchClassification": "good",
+        "text": null
+    },
+    "filename": "surfing_img.png",
+    "raw": {
+        "fullTextAnnotation": {},
+        "labelAnnotations": [
+            {
+                "description": "Boardsport",
+                "score": 0.9867
+            },
+            {
+                "description": "Surfboard",
+                "score": 0.9863
+            },
+            {
+                "description": "Surfing",
+                "score": 0.9834
+            },
+            {
+                "description": "Water",
+                "score": 0.9824
+            },
+            {
+                "description": "Surfing--Equipment and supplies",
+                "score": 0.9772
+            },
+            {
+                "description": "Water sport",
+                "score": 0.9634
+            },
+            {
+                "description": "Wave",
+                "score": 0.9623
+            },
+            {
+                "description": "List of surface water sports",
+                "score": 0.9603
+            },
+            {
+                "description": "Fluid",
+                "score": 0.9558
+            },
+            {
+                "description": "Personal protective equipment",
+                "score": 0.9555
+            }
+        ],
+        "logoAnnotations": [],
+        "safeSearchAnnotation": {
+            "adult": "VERY_UNLIKELY",
+            "medical": "VERY_UNLIKELY",
+            "racy": "UNLIKELY",
+            "spoof": "VERY_UNLIKELY",
+            "violence": "VERY_UNLIKELY"
+        }
+    }
+}
+```
 
 ## Credentials
 
