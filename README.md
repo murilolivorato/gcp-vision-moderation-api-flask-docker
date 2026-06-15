@@ -1,4 +1,15 @@
-# Upload with Google Vision (Python)
+# Build an Image Moderation API with Flask, Docker, and Google Cloud Vision
+
+
+[![Python 3.12+](https://img.shields.io/badge/Python-3.12%2B-blue?style=flat-square&logo=python)](https://www.python.org/downloads/)
+[![Flask](https://img.shields.io/badge/Flask-3.0-darkgreen?style=flat-square&logo=flask)](https://flask.palletsprojects.com/)
+[![Docker](https://img.shields.io/badge/Docker-Compose-blue?style=flat-square&logo=docker)](https://www.docker.com/)
+[![Google Cloud Vision](https://img.shields.io/badge/Google%20Cloud-Vision%20API-red?style=flat-square&logo=google-cloud)](https://cloud.google.com/vision)
+[![License MIT](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
+[![GitHub Stars](https://img.shields.io/github/stars/murilolivorato/gcp-vision-moderation-api-flask-docker?style=social)](https://github.com/murilolivorato/gcp-vision-moderation-api-flask-docker)
+
+**Part of the [Medium series](https://medium.com/@murilolivorato)** on image moderation & AI
+ 
 
 Flask backend that accepts an uploaded image and analyzes it with the Google
 Cloud Vision API. It analyzes the image bytes uploaded directly by the client —
@@ -235,3 +246,13 @@ git-ignored.
 ├── Dockerfile
 └── docker-compose.yml
 ```
+
+
+
+<div align="center">
+  <h3>⭐ Star This Repository ⭐</h3>
+  <p>Your support helps us improve and maintain this project!</p>
+  <a href="https://github.com/murilolivorato/gcp-vision-moderation-api-flask-docker/stargazers">
+    <img src="https://img.shields.io/github/stars/murilolivorato/gcp-vision-moderation-api-flask-docker?style=social" alt="GitHub Stars">
+  </a>
+</div>
