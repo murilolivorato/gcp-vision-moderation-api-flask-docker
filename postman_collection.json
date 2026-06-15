@@ -1,0 +1,138 @@
+{
+  "info": {
+    "name": "Upload with Google Vision",
+    "description": "Image upload and analysis via Google Cloud Vision API.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:5000",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Status",
+      "item": [
+        {
+          "name": "Welcome",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/",
+              "host": ["{{base_url}}"],
+              "path": [""]
+            },
+            "description": "Returns API name and running status."
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"message\": \"Welcome to the Upload with Google Vision API\",\n  \"status\": \"running\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/health",
+              "host": ["{{base_url}}"],
+              "path": ["health"]
+            },
+            "description": "Lightweight liveness probe."
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"status\": \"healthy\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Analyze",
+      "item": [
+        {
+          "name": "Analyze Image",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": "",
+                  "description": "Image file to analyze (JPG, PNG, WEBP, GIF, BMP). Max 10 MB."
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/analyze",
+              "host": ["{{base_url}}"],
+              "path": ["analyze"]
+            },
+            "description": "Upload an image and receive a full Google Vision analysis.\n\n**Body (form-data)**\n- `image` (File, required) — the image to analyze. Supported types: jpg, jpeg, png, gif, bmp, webp. Max 10 MB.\n\n**Response fields**\n- `filename` — original file name\n- `analysis.labels` — Vision label descriptions (lowercase)\n- `analysis.text` — detected text (if any), collapsed to one line\n- `analysis.isHuman` — true if a person / face was detected\n- `analysis.hasLogo` — detected logo names, comma-separated (or null)\n- `analysis.safeSearch` — per-category likelihood from Vision (very_unlikely … very_likely)\n- `analysis.safeSearchClassification` — `good` / `need_approval` / `alert`\n- `analysis.matchedCategories` — `{ \"CategoryName\": [\"matched\", \"keywords\"] }` for every category that matched\n- `analysis.categories` — just the matched category names\n- `raw` — unmodified Google Vision response"
+          },
+          "response": [
+            {
+              "name": "200 – verified (guitar)",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"filename\": \"guitar.jpg\",\n  \"analysis\": {\n    \"labels\": [\"musical instrument\", \"string instrument\", \"guitar\", \"chordophone\", \"plucked string instrument\"],\n    \"text\": null,\n    \"isHuman\": false,\n    \"hasLogo\": null,\n    \"safeSearch\": {\n      \"adult\": \"very_unlikely\",\n      \"spoof\": \"very_unlikely\",\n      \"medical\": \"very_unlikely\",\n      \"violence\": \"very_unlikely\",\n      \"racy\": \"unlikely\"\n    },\n    \"safeSearchClassification\": \"good\",\n    \"matchedCategories\": {},\n    \"categories\": []\n  },\n  \"raw\": {\n    \"labelAnnotations\": [\n      { \"description\": \"Musical instrument\", \"score\": 0.9932 },\n      { \"description\": \"String instrument\", \"score\": 0.9919 }\n    ],\n    \"logoAnnotations\": [],\n    \"fullTextAnnotation\": {},\n    \"safeSearchAnnotation\": {\n      \"adult\": \"VERY_UNLIKELY\",\n      \"spoof\": \"VERY_UNLIKELY\",\n      \"medical\": \"VERY_UNLIKELY\",\n      \"violence\": \"VERY_UNLIKELY\",\n      \"racy\": \"UNLIKELY\"\n    }\n  }\n}"
+            },
+            {
+              "name": "200 – categories matched (cat)",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"filename\": \"cat.jpg\",\n  \"analysis\": {\n    \"labels\": [\"cat\", \"felidae\", \"whiskers\", \"felinae\", \"carnivores\", \"vertebrate\", \"close-up\", \"snout\", \"fur\", \"terrestrial animal\"],\n    \"text\": null,\n    \"isHuman\": false,\n    \"hasLogo\": null,\n    \"safeSearch\": {\n      \"adult\": \"very_unlikely\",\n      \"spoof\": \"possible\",\n      \"medical\": \"unlikely\",\n      \"violence\": \"unlikely\",\n      \"racy\": \"very_unlikely\"\n    },\n    \"safeSearchClassification\": \"need_approval\",\n    \"matchedCategories\": {\n      \"PetsAndAnimals\": [\"cat\", \"whiskers\", \"fur\", \"snout\"]\n    },\n    \"categories\": [\"PetsAndAnimals\"]\n  },\n  \"raw\": {\n    \"labelAnnotations\": [\n      { \"description\": \"Cat\", \"score\": 0.9971 },\n      { \"description\": \"Whiskers\", \"score\": 0.9901 }\n    ],\n    \"logoAnnotations\": [],\n    \"fullTextAnnotation\": {},\n    \"safeSearchAnnotation\": {\n      \"adult\": \"VERY_UNLIKELY\",\n      \"spoof\": \"POSSIBLE\",\n      \"medical\": \"UNLIKELY\",\n      \"violence\": \"UNLIKELY\",\n      \"racy\": \"VERY_UNLIKELY\"\n    }\n  }\n}"
+            },
+            {
+              "name": "400 – no file provided",
+              "status": "Bad Request",
+              "code": 400,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"error\": \"No image file provided. Use form-data field 'image'.\"\n}"
+            },
+            {
+              "name": "400 – unsupported file type",
+              "status": "Bad Request",
+              "code": 400,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"error\": \"Unsupported file type. Allowed: bmp, gif, jpeg, jpg, png, webp\"\n}"
+            },
+            {
+              "name": "413 – file too large",
+              "status": "Request Entity Too Large",
+              "code": 413,
+              "header": [{ "key": "Content-Type", "value": "text/html" }],
+              "body": "<h1>Request Entity Too Large</h1>"
+            },
+            {
+              "name": "502 – Vision API error",
+              "status": "Bad Gateway",
+              "code": 502,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"error\": \"Vision API Error: Bad image data.\"\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

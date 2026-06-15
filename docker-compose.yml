@@ -1,0 +1,14 @@
+services:
+  api:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./app:/app
+      - ./keys:/keys:ro
+      - ./logs:/logs
+    environment:
+      - FLASK_ENV=development
+      - GOOGLE_APPLICATION_CREDENTIALS=/keys/service-account.json
+      - LOG_FILE=/logs/analyze.log
+    restart: unless-stopped
