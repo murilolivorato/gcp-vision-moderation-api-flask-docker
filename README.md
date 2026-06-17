@@ -11,6 +11,7 @@
 <div align="center">
   <img src="https://cdn-images-1.medium.com/max/800/1*llAxB81ZfcSA9bLgAIFsow.png" alt="Text Moderation Flow" width="700">
 </div>
+
 ---
 
 **Read the full article on Medium:**
