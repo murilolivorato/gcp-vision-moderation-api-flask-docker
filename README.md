@@ -8,14 +8,19 @@
 [![License MIT](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
 [![GitHub Stars](https://img.shields.io/github/stars/murilolivorato/gcp-vision-moderation-api-flask-docker?style=social)](https://github.com/murilolivorato/gcp-vision-moderation-api-flask-docker)
 
-**Part of the [Medium series](https://medium.com/@murilolivorato)** on image moderation & AI
- 
+<div align="center">
+  <img src="https://cdn-images-1.medium.com/max/800/1*llAxB81ZfcSA9bLgAIFsow.png" alt="Text Moderation Flow" width="700">
+</div>
+---
+
+**Read the full article on Medium:**
+
+✍️ [https://medium.com/@murilolivorato/build-an-image-moderation-api-with-flask-docker-and-google-cloud-vision-6d46b77b978f](https://medium.com/@murilolivorato/build-an-image-moderation-api-with-flask-docker-and-google-cloud-vision-6d46b77b978f)
+
 
 Flask backend that accepts an uploaded image and analyzes it with the Google
 Cloud Vision API. It analyzes the image bytes uploaded directly by the client —
 no storage bucket required.
-
-![Image moderation flow: upload → Google Vision API → analysis & verdict](https://cdn-images-1.medium.com/max/800/1*llAxB81ZfcSA9bLgAIFsow.png)
 
 ## Run
 
